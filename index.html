@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen Based Calculator</title>
+    <style>
+        /* [Previous CSS styles remain unchanged] */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .title {
+            color: #6a1b9a; /* Deep purple */
+            font-size: 2em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .title a {
+            color: #6a1b9a;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid rgba(106, 27, 154, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .title a:hover {
+            color: #7b1fa2;
+            border-bottom-color: #7b1fa2;
+        }
+
+        /* [Calculator styles remain unchanged - same as previous CSS] */
+        .calculator {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            box-sizing: border-box;
+        }
+
+        .display {
+            background-color: #202124;
+            color: #fff;
+            font-size: 2.5em;
+            text-align: right;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            min-height: 50px;
+            transition: all 0.2s ease;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 15px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.operator {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+
+        .btn.equal {
+            background-color: #4CAF50;
+            color: white;
+            grid-column: span 2;
+            font-weight: bold;
+        }
+
+        .btn.zero {
+            grid-column: span 2;
+        }
+
+        .btn.scientific {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .btn.function {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .btn.function:hover {
+            background-color: #ffeeba;
+        }
+
+        .btn.operator:hover,
+        .btn.scientific:hover,
+        .btn.function:hover {
+            opacity: 0.9;
+        }
+
+        .btn.equal:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 450px) {
+            .calculator {
+                width: 95vw;
+                padding: 15px;
+            }
+            
+            .display {
+                font-size: 2em;
+                padding: 15px;
+            }
+            
+            .btn {
+                font-size: 1em;
+                padding: 12px;
+            }
+        }
+
+        .display.animation {
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Qwen Based Calculator by 
+        <a href="https://github.com/qwen"  target="_blank" rel="noopener noreferrer">
+            Qwen
+        </a>
+    </h1>
+    
+    <div class="calculator">
+        <!-- [Calculator content remains unchanged] -->
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <!-- Scientific Functions -->
+            <button class="btn scientific function" data-value="sin">sin</button>
+            <button class="btn scientific function" data-value="cos">cos</button>
+            <button class="btn scientific function" data-value="tan">tan</button>
+            <button class="btn scientific function" data-value="log">log</button>
+            <button class="btn scientific function" data-value="ln">ln</button>
+            
+            <button class="btn scientific" data-value="sqrt">√</button>
+            <button class="btn scientific" data-value="pow">x²</button>
+            <button class="btn scientific" data-value="exp">exp</button>
+            <button class="btn scientific" data-value="π">π</button>
+            <button class="btn scientific" data-value="e">e</button>
+            
+            <!-- Basic Operations -->
+            <button class="btn operator" data-value="AC">AC</button>
+            <button class="btn operator" data-value="C">C</button>
+            <button class="btn operator" data-value="(">(</button>
+            <button class="btn operator" data-value=")">)</button>
+            <button class="btn operator" data-value="/">÷</button>
+            
+            <button class="btn" data-value="7">7</button>
+            <button class="btn" data-value="8">8</button>
+            <button class="btn" data-value="9">9</button>
+            <button class="btn operator" data-value="*">×</button>
+            <button class="btn operator" data-value="fact">!</button>
+            
+            <button class="btn" data-value="4">4</button>
+            <button class="btn" data-value="5">5</button>
+            <button class="btn" data-value="6">6</button>
+            <button class="btn operator" data-value="-">−</button>
+            <button class="btn operator" data-value="mod">mod</button>
+            
+            <button class="btn" data-value="1">1</button>
+            <button class="btn" data-value="2">2</button>
+            <button class="btn" data-value="3">3</button>
+            <button class="btn operator" data-value="+">+</button>
+            <button class="btn equal" data-value="=">=</button>
+            
+            <button class="btn zero" data-value="0">0</button>
+            <button class="btn" data-value=".">.</button>
+        </div>
+    </div>
+    
+    <script>
+        // [Same JavaScript code as previously provided]
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let lastOperation = '';
+        let shouldResetDisplay = false;
+
+        function updateDisplay() {
+            display.textContent = currentInput || '0';
+            
+            // Add animation for visual feedback
+            display.classList.add('animation');
+            setTimeout(() => display.classList.remove('animation'), 200);
+        }
+
+        function handleSpecialFunctions(value) {
+            try {
+                switch(value) {
+                    case 'sin':
+                        return Math.sin(parseInput()).toString();
+                    case 'cos':
+                        return Math.cos(parseInput()).toString();
+                    case 'tan':
+                        return Math.tan(parseInput()).toString();
+                    case 'log':
+                        return Math.log10(parseInput()).toString();
+                    case 'ln':
+                        return Math.log(parseInput()).toString();
+                    case 'sqrt':
+                        return Math.sqrt(parseInput()).toString();
+                    case 'pow':
+                        return `(${parseInput()})**2`;
+                    case 'exp':
+                        return Math.exp(parseInput()).toString();
+                    case 'π':
+                        return currentInput + Math.PI;
+                    case 'e':
+                        return currentInput + Math.E;
+                    case 'fact':
+                        const num = parseInt(parseInput());
+                        if (num < 0) throw new Error('Negative numbers have no factorial');
+                        return factorial(num).toString();
+                    case 'mod':
+                        return currentInput + '%';
+                    default:
+                        return currentInput;
+                }
+            } catch (error) {
+                return 'Error';
+            }
+        }
+
+        function factorial(n) {
+            if (n <= 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+
+        function parseInput() {
+            try {
+                // Handle empty input
+                if (!currentInput) return 0;
+                
+                // Replace symbols with JavaScript operators
+                const expression = currentInput
+                    .replace(/÷/g, '/')
+                    .replace(/×/g, '*')
+                    .replace(/−/g, '-');
+                    
+                const result = eval(expression);
+                return isNaN(result) ? 0 : result;
+            } catch (error) {
+                return 0;
+            }
+        }
+
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.getAttribute('data-value');
+                
+                // Clear All
+                if (value === 'AC') {
+                    currentInput = '';
+                    updateDisplay();
+                    return;
+                }
+                
+                // Clear Entry
+                if (value === 'C') {
+                    currentInput = currentInput.slice(0, -1) || '';
+                    updateDisplay();
+                    return;
+                }
+                
+                // Equals
+                if (value === '=') {
+                    try {
+                        // Replace symbols with JavaScript operators
+                        const expression = currentInput
+                            .replace(/÷/g, '/')
+                            .replace(/×/g, '*')
+                            .replace(/−/g, '-');
+                            
+                        // Evaluate expression
+                        const result = eval(expression);
+                        
+                        if (result === undefined || isNaN(result)) {
+                            throw new Error('Invalid calculation');
+                        }
+                        
+                        currentInput = result.toString();
+                        updateDisplay();
+                    } catch (error) {
+                        display.textContent = 'Error';
+                        currentInput = '';
+                        setTimeout(() => updateDisplay(), 1000);
+                    }
+                    return;
+                }
+                
+                // Handle scientific functions
+                if (['sin', 'cos', 'tan', 'log', 'ln', 'sqrt', 'pow', 'exp', 'π', 'e', 'fact', 'mod'].includes(value)) {
+                    currentInput = handleSpecialFunctions(value);
+                    updateDisplay();
+                    return;
+                }
+                
+                // Handle operators
+                if (['+', '-', '*', '/', '%'].includes(value)) {
+                    // Replace previous operator if needed
+                    if (currentInput && ['+', '-', '*', '/', '%'].includes(currentInput.slice(-1))) {
+                        currentInput = currentInput.slice(0, -1);
+                    }
+                    currentInput += value;
+                    updateDisplay();
+                    return;
+                }
+                
+                // Handle decimal point
+                if (value === '.' && currentInput.slice(-1) === '.') return;
+                
+                // Handle parentheses
+                if (value === '(' || value === ')') {
+                    currentInput += value;
+                    updateDisplay();
+                    return;
+                }
+                
+                // Handle numbers
+                if (currentInput === '0' || shouldResetDisplay) {
+                    currentInput = value;
+                    shouldResetDisplay = false;
+                } else {
+                    currentInput += value;
+                }
+                
+                updateDisplay();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+/* styles.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.calculator {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 400px;
+    box-sizing: border-box;
+}
+
+.display {
+    background-color: #202124;
+    color: #fff;
+    font-size: 2.5em;
+    text-align: right;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    min-height: 50px;
+    transition: all 0.2s ease;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.btn {
+    padding: 15px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn.operator {
+    background-color: #e0e0e0;
+    font-weight: bold;
+}
+
+.btn.equal {
+    background-color: #4CAF50;
+    color: white;
+    grid-column: span 2;
+    font-weight: bold;
+}
+
+.btn.zero {
+    grid-column: span 2;
+}
+
+.btn.scientific {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.btn.function {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.btn.function:hover {
+    background-color: #ffeeba;
+}
+
+.btn.operator:hover,
+.btn.scientific:hover,
+.btn.function:hover {
+    opacity: 0.9;
+}
+
+.btn.equal:hover {
+    background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 450px) {
+    .calculator {
+        width: 95vw;
+        padding: 15px;
+    }
+    
+    .display {
+        font-size: 2em;
+        padding: 15px;
+    }
+    
+    .btn {
+        font-size: 1em;
+        padding: 12px;
+    }
+}
+
+/* Add subtle animation for display */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.display.animation {
+    animation: fadeIn 0.2s ease-out;
+}
