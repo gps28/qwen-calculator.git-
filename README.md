@@ -1,2 +1,3 @@
-# qwen-calculator.git-
-🧮 Qwen-Based Scientific Calculator A web-based scientific calculator built with HTML, CSS, and JavaScript, featuring advanced mathematical operations and responsive design.  🔍 Overview This is a feature-rich scientific calculator inspired by Qwen's technical capabilities. 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 
+[![Build Status](https://img.shields.io/badge/status-active-success.svg)]() 
+[![Qwen Powered](https://img.shields.io/badge/Qwen-powered-purple.svg)](https://github.com/qwen) 
